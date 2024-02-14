@@ -62,8 +62,8 @@ void talkToServer(int socketNum, struct sockaddr_in6 *server)
 
 		printf("Sending: %s with len: %d\n", buffer, dataLen);
 
-		uint8_t pduBuffer[MAXBUF + 1];
-		memset(pduBuffer, 0, MAXBUF + 1);
+		uint8_t pduBuffer[dataLen + HEADER_LEN];
+		memset(pduBuffer, 0, dataLen + HEADER_LEN);
 
 		int length = createPDU(pduBuffer, sequenceNumber, 3, (uint8_t *)buffer, dataLen);
 		printPDU(pduBuffer, length);
