@@ -24,8 +24,8 @@ int createPDU(uint8_t *pduBuffer, uint32_t sequenceNumber, uint8_t flag, uint8_t
     index += payloadLen;
 
     // Compute checksum and copy into buffer
-    short checksum = in_cksum((unsigned short *)pduBuffer, index);
-    short netChecksum = htons(checksum);
+    unsigned short checksum = in_cksum((unsigned short *)pduBuffer, index);
+    unsigned short netChecksum = htons(checksum);
     memcpy(pduBuffer + checksumIndex, &netChecksum, 2);
 
     pduLength = index;
