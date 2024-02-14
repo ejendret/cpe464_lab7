@@ -24,9 +24,8 @@ int createPDU(uint8_t *pduBuffer, uint32_t sequenceNumber, uint8_t flag, uint8_t
     index += payloadLen;
 
     // Compute checksum and copy into buffer
-    unsigned short checksum = in_cksum((unsigned short *)pduBuffer, index);
-    unsigned short netChecksum = htons(checksum);
-    memcpy(pduBuffer + checksumIndex, &netChecksum, 2);
+    uint16_t checksum = in_cksum((unsigned short *)pduBuffer, index);
+    memcpy(pduBuffer + checksumIndex, &checksum, 2);
 
     pduLength = index;
 
@@ -35,4 +34,36 @@ int createPDU(uint8_t *pduBuffer, uint32_t sequenceNumber, uint8_t flag, uint8_t
 
 void printPDU(uint8_t *aPDU, int pduLength)
 {
+    uint32_t sequenceNum;
+    uint32_t hostSequenceNum;
+    uint16_t checksum;
+    uint8_t flag;
+    uint32_t index = 0;
+
+    memcpy(&sequenceNum, aPDU + index, 4);
+    hostSequenceNum = ntohl(sequenceNum);
+    index += 4;
+    memcpy(&checksum, aPDU + index, 2);
+    index += 2;
+    memcpy(&flag, aPDU + index, 1);
+    index += 1;
+
+    // Print static
+    printf("Sequence number: %d\n", hostSequenceNum);
+    printf("Flag: %d\n", flag);
+
+    // Print payload
+    int payloadLength = pduLength - index;
+    uint8_t payloadBuffer[payloadLength + 1];
+    memset(payloadBuffer, 0, payloadLength + 1);
+    memcpy(payloadBuffer, aPDU + index, payloadLength);
+
+    printf("Payload: %s\n", payloadBuffer);
+    printf("Payload length: %d\n", payloadLength);
+
+    uint8_t checksumRes = in_cksum((unsigned short *)aPDU, pduLength);
+    if (checksumRes != 0)
+    {
+        fprintf(stderr, "Checksum failed: %d\n", checksum);
+    }
 }

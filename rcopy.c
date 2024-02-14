@@ -18,6 +18,7 @@
 #include "gethostbyname.h"
 #include "networks.h"
 #include "safeUtil.h"
+#include "pduUtil.h"
 
 #define MAXBUF 80
 
@@ -35,6 +36,15 @@ int main(int argc, char *argv[])
 
 	float errorRate = atof(argv[1]);
 	printf("Error rate is: %f\n", errorRate);
+
+	uint8_t pduBuffer[256];
+	memset(pduBuffer, 0, 256);
+	uint8_t payload[50];
+	memset(payload, 'C', 50);
+
+	int length = createPDU(pduBuffer, 23, 5, payload, 50);
+
+	printPDU(pduBuffer, length);
 
 	socketNum = setupUdpClientToServer(&server, argv[2], portNumber);
 
