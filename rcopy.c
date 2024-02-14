@@ -19,6 +19,7 @@
 #include "networks.h"
 #include "safeUtil.h"
 #include "pduUtil.h"
+#include "cpe464.h"
 
 #define MAXBUF 80
 
@@ -33,6 +34,9 @@ int main(int argc, char *argv[])
 	int portNumber = 0;
 
 	portNumber = checkArgs(argc, argv);
+	float errorRate = atof(argv[1]);
+
+	sendtoErr_init(errorRate, DROP_ON, FLIP_ON, DEBUG_ON, RSEED_OFF);
 
 	socketNum = setupUdpClientToServer(&server, argv[2], portNumber);
 
