@@ -12,6 +12,7 @@ int createPDU(uint8_t *pduBuffer, uint32_t sequenceNumber, uint8_t flag, uint8_t
     index += 4;
 
     // Skip checksum for now, will compute after
+    memset(pduBuffer + index, 0, 2);
     int checksumIndex = index;
     index += 2;
 
