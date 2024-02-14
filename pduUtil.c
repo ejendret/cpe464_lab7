@@ -1,4 +1,4 @@
-#include "pduUtil.h";
+#include "pduUtil.h"
 
 int createPDU(uint8_t *pduBuffer, uint32_t sequenceNumber, uint8_t flag, uint8_t *payload, int payloadLen)
 {
@@ -24,7 +24,7 @@ int createPDU(uint8_t *pduBuffer, uint32_t sequenceNumber, uint8_t flag, uint8_t
     index += payloadLen;
 
     // Compute checksum and copy into buffer
-    short checksum = in_cksum(pduBuffer, index);
+    short checksum = in_cksum((unsigned short *)pduBuffer, index);
     short netChecksum = htons(checksum);
     memcpy(pduBuffer + checksumIndex, &netChecksum, 2);
 

@@ -2,6 +2,7 @@
 #define __PDU_UTIL_H__
 
 #include "networks.h"
+#include "checksum.h"
 
 // Functions
 //
